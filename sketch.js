@@ -1,5 +1,6 @@
 var wall , bullet;
 var speed , weight , thickness;
+var bulletRE , wallLE;
 
 function setup() {
   createCanvas(1400,400);
@@ -12,17 +13,30 @@ function setup() {
 
   bullet.velocityX = speed;
 }
+ 
+function hasCollided(object1 , object2){
+  bulletRE = object1.x + object1.width;
+  wallLE = object2.x;
+
+ if(bulletRE>=wallLE) 
+  {
+    return true
+  }
+    return false;
+}
 
 function draw() {
   background(255,255,255);  
 
-if(wall.x - bullet.x < bullet.width/2 + wall.width/2) {
+if(hasCollided(bullet , wall)) {
   bullet.velocityX = 0;
 
-  var damage = 0.5 * width * speed * speed/ thickness * thickness * thickness;
+  var damage = 0.5 * width * speed * speed/ (thickness * thickness * thickness);
+
   if(damage < 10) {
     bullet.shapeColor = color(0, 255, 0);
   }
+  
   if(damage > 10 ) {
     bullet.shapeColor = color(255, 0, 0);
   } 
@@ -30,3 +44,4 @@ if(wall.x - bullet.x < bullet.width/2 + wall.width/2) {
 }
   drawSprites();
 }
+
